@@ -1,2 +1,2 @@
 dusk 
-https://github.com/HerculesNode/Dusk-Node/blob/main/guncelleme.md
+https://docs.dusk.network/itn/upgrade-node/
