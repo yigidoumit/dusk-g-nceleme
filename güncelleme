@@ -1,0 +1,53 @@
+ Dusk düğümünü çalıştırmak üzere kullanımı kolay bir yükleyici içerir. Nasıl katılacağınız hakkında daha fazla bilgi için wiki'mizdeki düğüm çalıştırma kılavuzuna bakın.
+
+Önkoşullar
+Ubuntu 22.04 LTS x64
+OpenSSL 3
+Bu yükleyici özellikle Ubuntu 22.04 x64 için oluşturulmuştur. Daha eski veya daha yeni sürümlerde çalışabilir.
+
+Paketler
+Yükleyici aşağıdaki paketlerle birlikte gelir:
+
+Rusk hizmeti
+Rusk cüzdan CLI'sı
+Klasör düzeni
+Yapılandırma dosyaları, ikili dosyalar, hizmetler ve komut dosyaları /opt/dusk/.
+
+/var/log/rusk.logGünlük dosyaları ve'de bulunabilir /var/log/rusk-recovery.log.
+
+Kurulum
+ℹ️ ITN yükleyicisinin en son sürümünü çalıştırmak için aşağıdaki komutu yürütün:
+
+curl --proto '=https' --tlsv1.2 -sSfL https://github.com/dusk-network/itn-installer/releases/download/v0.1.5/itn-installer.sh | sudo sh
+⚠️ DİKKAT ITN yükleyicisinin yayınlanmamış henüz kararsız sürümünü çalıştırmak için aşağıdaki komutu yürütün:
+
+curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/dusk-network/itn-installer/main/itn-installer.sh | sudo sh
+Yapılandırma
+Yükleyici, yalnızca minimum düzeyde yapılandırma gerektiren makul varsayılanlarla birlikte gelir. Rusk hizmetinin başlatılabilmesi için öncelikle CONSENSUS_KEYSve DUSK_CONSENSUS_KEYS_PASSsağlanması gerekmektedir.
+
+Bunlar başka bir sistemden CONSENSUS_KEYStaşınabilir /opt/dusk/conf/veya düğümün kendisinde oluşturulup oraya taşınabilir.
+
+Konsensüs anahtarlarını ayarlayın
+Temel hazırlık anahtarlarını yerel olarak oluşturmak için çalıştırın rusk-walletve yeni bir cüzdan oluşturun veya ile bir kurtarma ifadesi kullanın rusk-wallet restore.
+
+Sağlayıcı anahtar çiftini oluşturup dışa aktarmak ve dosyayı .keysdoğru adla doğru dizine koymak için aşağıdaki komutu kopyalayın:
+
+rusk-wallet export -d /opt/dusk/conf -n consensus.keys
+Konsensüs şifresini ayarla
+Aşağıdaki komutu çalıştırın; fikir birliği anahtarları dosyasının şifresini girmenizi isteyecektir:
+
+sh /opt/dusk/bin/setup_consensus_pwd.sh
+Rusk'u başlat
+Şimdi her şeyin yapılandırılması gerekiyor ve düğüm çalışmaya hazır. Aşağıdaki komutları kullanın:
+
+service rusk start
+Aşağıdakileri çalıştırarak Rusk hizmetinin durumunu kontrol edin:
+
+service rusk status
+Teşhis
+Düğümünüzün yeni blokları senkronize edip etmediğini, işleyip işlemediğini ve kabul edip etmediğini kontrol edin:
+
+tail -F /var/log/rusk.log | grep "block accepted"
+En son blok yüksekliğini kontrol etmek için:
+
+ruskquery block-height
